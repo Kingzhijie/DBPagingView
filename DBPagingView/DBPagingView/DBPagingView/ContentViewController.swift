@@ -10,14 +10,13 @@ import UIKit
 
 class ContentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     public var vcCanScroll = false
-    public var segTitle:String?
+    public var Title:String?
     fileprivate var fingerIsTouch:Bool = false
     public lazy var tableView : UITableView = {
-        let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), style: .grouped)
+        let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - CGFloat(StatusBarAndNavigationBarHeight) - 50), style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.white
-        tableView.separatorStyle = .none
         if #available(iOS 11.0, *){
             tableView.estimatedRowHeight = 0
             tableView.estimatedSectionFooterHeight = 0
@@ -39,12 +38,11 @@ class ContentViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     // MARK: - UITableView Method
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = segTitle
         return cell
     }
     

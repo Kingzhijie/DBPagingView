@@ -17,8 +17,10 @@
 		4C2ED04E1FAC587F001B0080 /* DB_PageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2ED04B1FAC587F001B0080 /* DB_PageContentView.swift */; };
 		4C2ED04F1FAC587F001B0080 /* DB_ContentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2ED04C1FAC587F001B0080 /* DB_ContentTableView.swift */; };
 		4C2ED0501FAC587F001B0080 /* DB_SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2ED04D1FAC587F001B0080 /* DB_SegmentView.swift */; };
-		4C2ED0521FAC5B4B001B0080 /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2ED0511FAC5B4B001B0080 /* ContentViewController.swift */; };
-		4C2ED0541FAC5B64001B0080 /* ContentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2ED0531FAC5B64001B0080 /* ContentViewCell.swift */; };
+		4CC645181FBAC316000D4EDC /* DBPagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC645171FBAC316000D4EDC /* DBPagingView.swift */; };
+		4CC6451A1FBACE23000D4EDC /* myViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC645191FBACE22000D4EDC /* myViewController.swift */; };
+		4CC6451C1FBAD173000D4EDC /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC6451B1FBAD173000D4EDC /* ContentViewController.swift */; };
+		4CC6451E1FBAD22C000D4EDC /* ContentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC6451D1FBAD22C000D4EDC /* ContentViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,8 +57,10 @@
 		4C2ED04B1FAC587F001B0080 /* DB_PageContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DB_PageContentView.swift; sourceTree = "<group>"; };
 		4C2ED04C1FAC587F001B0080 /* DB_ContentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DB_ContentTableView.swift; sourceTree = "<group>"; };
 		4C2ED04D1FAC587F001B0080 /* DB_SegmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DB_SegmentView.swift; sourceTree = "<group>"; };
-		4C2ED0511FAC5B4B001B0080 /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
-		4C2ED0531FAC5B64001B0080 /* ContentViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewCell.swift; sourceTree = "<group>"; };
+		4CC645171FBAC316000D4EDC /* DBPagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBPagingView.swift; sourceTree = "<group>"; };
+		4CC645191FBACE22000D4EDC /* myViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myViewController.swift; sourceTree = "<group>"; };
+		4CC6451B1FBAD173000D4EDC /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		4CC6451D1FBAD22C000D4EDC /* ContentViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +114,7 @@
 				4C2ED04A1FAC587F001B0080 /* DBPagingView */,
 				4C2ED01C1FAC57F9001B0080 /* AppDelegate.swift */,
 				4C2ED01E1FAC57F9001B0080 /* ViewController.swift */,
-				4C2ED0511FAC5B4B001B0080 /* ContentViewController.swift */,
-				4C2ED0531FAC5B64001B0080 /* ContentViewCell.swift */,
+				4CC645191FBACE22000D4EDC /* myViewController.swift */,
 				4C2ED0201FAC57F9001B0080 /* Main.storyboard */,
 				4C2ED0231FAC57F9001B0080 /* Assets.xcassets */,
 				4C2ED0251FAC57F9001B0080 /* LaunchScreen.storyboard */,
@@ -141,9 +144,12 @@
 		4C2ED04A1FAC587F001B0080 /* DBPagingView */ = {
 			isa = PBXGroup;
 			children = (
+				4CC6451B1FBAD173000D4EDC /* ContentViewController.swift */,
+				4CC6451D1FBAD22C000D4EDC /* ContentViewCell.swift */,
 				4C2ED04B1FAC587F001B0080 /* DB_PageContentView.swift */,
 				4C2ED04C1FAC587F001B0080 /* DB_ContentTableView.swift */,
 				4C2ED04D1FAC587F001B0080 /* DB_SegmentView.swift */,
+				4CC645171FBAC316000D4EDC /* DBPagingView.swift */,
 			);
 			path = DBPagingView;
 			sourceTree = "<group>";
@@ -282,12 +288,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CC6451E1FBAD22C000D4EDC /* ContentViewCell.swift in Sources */,
 				4C2ED04E1FAC587F001B0080 /* DB_PageContentView.swift in Sources */,
+				4CC6451A1FBACE23000D4EDC /* myViewController.swift in Sources */,
 				4C2ED0501FAC587F001B0080 /* DB_SegmentView.swift in Sources */,
 				4C2ED01F1FAC57F9001B0080 /* ViewController.swift in Sources */,
+				4CC6451C1FBAD173000D4EDC /* ContentViewController.swift in Sources */,
 				4C2ED01D1FAC57F9001B0080 /* AppDelegate.swift in Sources */,
-				4C2ED0521FAC5B4B001B0080 /* ContentViewController.swift in Sources */,
-				4C2ED0541FAC5B64001B0080 /* ContentViewCell.swift in Sources */,
+				4CC645181FBAC316000D4EDC /* DBPagingView.swift in Sources */,
 				4C2ED04F1FAC587F001B0080 /* DB_ContentTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -46,15 +46,15 @@ class DB_SegmentView: UIView {
         self.backgroundColor = .white
         numberOfSegments = titles.count
         
-        let lineView = UIView(frame: CGRect(x: 0, y: frame.size.height - 1.0, width: frame.size.width, height: 1.0))
-        lineView.backgroundColor = .darkGray
+        let lineView = UIView(frame: CGRect(x: 0, y: frame.size.height - 1.0, width: frame.size.width, height: 0.5))
+        lineView.backgroundColor = .lightGray
         self.addSubview(lineView)
         
         let confWidth = frame.size.width / CGFloat(numberOfSegments)
         for index:Int in 0..<numberOfSegments {
             let scale = CGFloat(index) / CGFloat(numberOfSegments)
-            let shuView = UIView(frame: CGRect(x: scale * UIScreen.main.bounds.size.width, y: 14, width: 1.0, height: frame.size.height - 28))
-            shuView.backgroundColor = .darkGray
+            let shuView = UIView(frame: CGRect(x: scale * UIScreen.main.bounds.size.width, y: 14, width: 0.5, height: frame.size.height - 28))
+            shuView.backgroundColor = .lightGray
             let button = configureLabels(name: titles[index])
             button.tag = 1000 + index
             button.frame = CGRect(x: CGFloat(index) * confWidth, y: 0, width: confWidth, height: frame.size.height)
