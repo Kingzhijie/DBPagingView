@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         }
 
         let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers, superController: self, headerView: header)
+        
         self.view.addSubview(pagingView)
         
         //样式调整
@@ -34,6 +35,8 @@ class ViewController: UIViewController {
         pagingView.selectedTextColor = .red
         pagingView.font = 15
         pagingView.selectedFont = 18
+        
+        pagingView.selectIndex = 2
         
     }
     

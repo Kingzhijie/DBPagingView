@@ -9,8 +9,9 @@
 import UIKit
 
 class ContentViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    public var isHeader = true //如果没有头部试图, 则不需要实现 scrollViewDidScroll
     public var vcCanScroll = false
-    public var Title:String?
+    public var segTitle:String?
     fileprivate var fingerIsTouch:Bool = false
     public lazy var tableView : UITableView = {
         let tableView = UITableView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height - CGFloat(StatusBarAndNavigationBarHeight) - 50), style: .grouped)
@@ -56,6 +57,10 @@ class ContentViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     
     func scrollViewDidScroll(_ scrollView:UIScrollView) {
+        if isHeader == false {
+            return
+        }
+        
         if !vcCanScroll {
             scrollView.contentOffset = CGPoint.zero
         }

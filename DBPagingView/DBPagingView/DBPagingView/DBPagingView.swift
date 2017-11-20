@@ -53,6 +53,17 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             }
         }
     }
+    public var segViewHeight:CGFloat = 50 //标签默认高度50
+    public var selectIndex = 0{ //可以修改, 选中的标签下标
+        didSet{
+            self.titleView?.selectedIndex = selectIndex
+            if self.pageView != nil {
+                self.pageView?.contentViewCurrentIndex = selectIndex
+            }else{
+                self.contentCell?.pageView?.contentViewCurrentIndex = selectIndex
+            }
+        }
+    }
     
     fileprivate lazy var tableView : DB_ContentTableView = { //tableView 必须继承DB_ContentTableView, 目的: 解决多手势冲突问题
         let tableView = DB_ContentTableView(frame: CGRect(x: 0, y: CGFloat(StatusBarAndNavigationBarHeight), width: self.frame.width, height: self.frame.height - CGFloat(StatusBarAndNavigationBarHeight)), style: .grouped)
@@ -72,19 +83,24 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
         return tableView
     }()
     fileprivate lazy var titleView: DB_SegmentView? = { //标签View
-        let titleView = DB_SegmentView(frame: CGRect(x: 0, y: CGFloat(StatusBarAndNavigationBarHeight), width: UIScreen.main.bounds.size.width, height: segViewHeight), titles: titleArray)
+        let titleView = DB_SegmentView(frame: CGRect(x: 0, y: CGFloat(StatusBarAndNavigationBarHeight), width: UIScreen.main.bounds.size.width, height: self.segViewHeight), titles: self.titleArray)
         titleView.selectBlock = {[weak self] in
-            self?.contentCell?.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
+            if self?.pageView != nil{
+                self?.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
+            }else{
+                self?.contentCell?.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
+            }
         }
         return titleView
     }()
-    public var segViewHeight:CGFloat = 50 //标签默认高度50
+   
     fileprivate var canScroll:Bool = true //默认可以滚动
     fileprivate var titleArray = [String]() //标签title
     fileprivate var contentCell:ContentViewCell?
     fileprivate var superControll = UIViewController()
     fileprivate var controllers = [ContentViewController]()
     fileprivate var headView:UIView?
+    fileprivate var pageView:DB_PageContentView?
     
     /// 初始化方法
     ///
@@ -107,6 +123,31 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
         NotificationCenter.default.addObserver(self, selector: #selector(changeScrollStatus), name: NSNotification.Name(rawValue: "leaveTop"), object: nil)
     }
     
+    /// 初始化方法
+    ///
+    /// - Parameters:
+    ///   - frame: frame
+    ///   - titles: 标签title
+    ///   - controllersArray: 标签controllers
+    ///   - superController: 父视图VC
+    init(frame: CGRect,titles:[String],controllersArray:[ContentViewController],superController:UIViewController) {
+        super.init(frame: frame)
+        titleArray = titles
+        controllers = controllersArray
+        superControll = superController
+        self.addSubview(self.titleView!)
+        
+        for index in 0..<titleArray.count {
+            let contentVC = controllers[index]
+            contentVC.isHeader = false
+            contentVC.segTitle = titleArray[index]
+        }
+        
+        pageView = DB_PageContentView(frame: CGRect(x: 0, y: (self.titleView?.frame.size.height)! + CGFloat(StatusBarAndNavigationBarHeight), width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: controllers, parentVC: superControll, delegate: self)
+        self.addSubview(pageView!)
+        
+    }
+    
     @objc fileprivate func changeScrollStatus() {
         canScroll = true
         contentCell?.cellCanScroll = false
@@ -127,12 +168,12 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             contentCell?.selectionStyle = .none
             for index in 0..<titleArray.count {
                 let contentVC = controllers[index]
-                contentVC.Title = titleArray[index]
+                contentVC.segTitle = titleArray[index]
             }
             contentCell?.viewControllers = controllers
             contentCell?.pageView = DB_PageContentView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: controllers, parentVC: superControll, delegate: self)
             contentCell?.addSubview((contentCell?.pageView)!)
-            
+            contentCell?.pageView?.contentViewCurrentIndex = selectIndex
             return contentCell!
         }else{
             let cell = UITableViewCell()

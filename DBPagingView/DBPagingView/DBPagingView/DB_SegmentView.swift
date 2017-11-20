@@ -46,7 +46,7 @@ class DB_SegmentView: UIView {
         self.backgroundColor = .white
         numberOfSegments = titles.count
         
-        let lineView = UIView(frame: CGRect(x: 0, y: frame.size.height - 1.0, width: frame.size.width, height: 0.5))
+        let lineView = UIView(frame: CGRect(x: 0, y: frame.size.height - 0.5, width: frame.size.width, height: 0.5))
         lineView.backgroundColor = .lightGray
         self.addSubview(lineView)
         
@@ -91,7 +91,7 @@ class DB_SegmentView: UIView {
     
     private func selectChangeButtonStyle() {
         let button = self.viewWithTag(selectedIndex + 1000)
-        changeButtonStyle(button: button as! UIButton)
+        changeButtonStyle(button: button as? UIButton ?? UIButton())
     }
     
     private func changeButtonStyle(button:UIButton) {

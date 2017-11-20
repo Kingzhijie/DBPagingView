@@ -7,13 +7,21 @@
 //
 
 import UIKit
-
+import MJRefresh
 class myViewController: ContentViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.mj_header = MJRefreshNormalHeader(refreshingBlock: {[weak self] in
+           self?.refreshingData()
+        })
 
         // Do any additional setup after loading the view.
+    }
+    
+    func refreshingData() {
+        self.tableView.mj_header.endRefreshing()
     }
     
     // MARK: - UITableView Method
@@ -23,7 +31,7 @@ class myViewController: ContentViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = Title
+        cell.textLabel?.text = segTitle
         return cell
     }
     
@@ -38,7 +46,7 @@ class myViewController: ContentViewController {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.01
     }
-    
+
     
 
     override func didReceiveMemoryWarning() {
