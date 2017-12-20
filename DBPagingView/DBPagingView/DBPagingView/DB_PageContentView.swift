@@ -48,7 +48,7 @@ class DB_PageContentView: UIView ,UICollectionViewDelegate,UICollectionViewDataS
                 return
             }
             isSelectBtn = true
-            self.collectionView.scrollToItem(at: NSIndexPath.init(row: contentViewCurrentIndex, section: 0) as IndexPath, at: UICollectionViewScrollPosition.init(rawValue: 0), animated: false)
+            self.collectionView.scrollToItem(at: IndexPath.init(row: contentViewCurrentIndex, section: 0), at: UICollectionViewScrollPosition.init(rawValue: 0), animated: false)
         }
     }
     /**
@@ -61,7 +61,6 @@ class DB_PageContentView: UIView ,UICollectionViewDelegate,UICollectionViewDataS
     }
     
     private let collectionCellIdentifier = "collectionCellIdentifier"
-    weak private var parentVC:UIViewController? //父视图
     private var childsVCs:Array<UIViewController>? //子视图数组
     private var startOffsetX:CGFloat = 0
     private var isSelectBtn:Bool = false //是否是滑动
@@ -88,9 +87,8 @@ class DB_PageContentView: UIView ,UICollectionViewDelegate,UICollectionViewDataS
     ///   - childVCs: 子VC数组
     ///   - parentVC: 父视图VC
     ///   - delegate: delegate
-    init(frame: CGRect,childVCs:Array<UIViewController>,parentVC:UIViewController,delegate:PageContentViewDelegate) {
+    init(frame: CGRect,childVCs:Array<UIViewController>,delegate:PageContentViewDelegate) {
         super.init(frame: frame)
-        self.parentVC = parentVC
         self.childsVCs = childVCs
         self.delegate = delegate
         self.addSubview(self.collectionView)
@@ -101,9 +99,6 @@ class DB_PageContentView: UIView ,UICollectionViewDelegate,UICollectionViewDataS
         startOffsetX = 0
         isSelectBtn = false
         contentViewCanScroll = true
-        for childVC:UIViewController in childsVCs ?? [] {
-            self.parentVC?.addChildViewController(childVC)
-        }
         self.collectionView.reloadData()
     }
     
@@ -115,23 +110,20 @@ class DB_PageContentView: UIView ,UICollectionViewDelegate,UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionCellIdentifier, for: indexPath)
         cell.backgroundColor = .yellow
-//        if Float(UIDevice.current.systemVersion) < Float(8.0) {
-//            let childVC = self.childsVCs![indexPath.item] as UIViewController
-//            childVC.view.frame = cell.contentView.bounds
-//            if cell.contentView.subviews.contains(childVC.view) == false {
-//                cell.contentView.addSubview(childVC.view)
-//            }
-//        }
+        let childVC = self.childsVCs![indexPath.item] as UIViewController
+        childVC.view.frame = cell.contentView.bounds
+        childVC.view.removeFromSuperview()  //防止重复添加
+        cell.contentView.addSubview(childVC.view)
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let childVC = self.childsVCs![indexPath.item] as UIViewController
-        childVC.view.frame = cell.contentView.bounds
-        if cell.contentView.subviews.contains(childVC.view) == false {
-            cell.contentView.addSubview(childVC.view)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        let childVC = self.childsVCs![indexPath.item] as UIViewController
+//        childVC.view.frame = cell.contentView.bounds
+//        if cell.contentView.subviews.contains(childVC.view) == false {
+//            cell.contentView.addSubview(childVC.view)
+//        }
+//    }
     
     //MARK --- UIScrollView
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

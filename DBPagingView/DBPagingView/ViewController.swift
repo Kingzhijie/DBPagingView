@@ -23,10 +23,11 @@ class ViewController: UIViewController {
         var controllers = [myViewController]()  //对应controllers数组
         for _ in titles {
             let myVC = myViewController()  //myViewController 内容控制器. 必须继承ContentViewController 父控制器
+            self.addChildViewController(myVC)
             controllers.append(myVC)
         }
 
-        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers, superController: self, headerView: header)
+        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers, headerView: header)
         
         self.view.addSubview(pagingView)
         
@@ -36,8 +37,12 @@ class ViewController: UIViewController {
         pagingView.font = 15
         pagingView.selectedFont = 18
         
-        pagingView.selectIndex = 2
+        pagingView.selectIndex = 2 //默认选中标签
         
+    }
+    
+    deinit {
+        print("页面销毁")
     }
     
     override func didReceiveMemoryWarning() {

@@ -60,7 +60,7 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             if self.pageView != nil {
                 self.pageView?.contentViewCurrentIndex = selectIndex
             }else{
-                self.contentCell?.pageView?.contentViewCurrentIndex = selectIndex
+                self.contentCell.pageView?.contentViewCurrentIndex = selectIndex
             }
         }
     }
@@ -78,7 +78,6 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             tableView.estimatedSectionHeaderHeight = 0
             tableView.contentInsetAdjustmentBehavior = .never
         }else{
-            self.superControll.automaticallyAdjustsScrollViewInsets = false
         }
         return tableView
     }()
@@ -88,7 +87,7 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             if self?.pageView != nil{
                 self?.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
             }else{
-                self?.contentCell?.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
+                self?.contentCell.pageView?.contentViewCurrentIndex = (self?.titleView?.selectedIndex)!
             }
         }
         return titleView
@@ -96,8 +95,19 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
    
     fileprivate var canScroll:Bool = true //默认可以滚动
     fileprivate var titleArray = [String]() //标签title
-    fileprivate var contentCell:ContentViewCell?
-    fileprivate var superControll = UIViewController()
+    fileprivate lazy var contentCell: ContentViewCell = {
+        let cellIdentifier = "cell"
+        let contentCell = ContentViewCell(style: .default, reuseIdentifier: cellIdentifier)
+        contentCell.selectionStyle = .none
+        for index in 0..<self.titleArray.count {
+            let contentVC = self.controllers[index]
+            contentVC.segTitle = self.titleArray[index]
+        }
+        contentCell.viewControllers = self.controllers
+        contentCell.pageView = DB_PageContentView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: self.controllers, delegate: self)
+        contentCell.addSubview((contentCell.pageView)!)
+        return contentCell
+    }()
     fileprivate var controllers = [ContentViewController]()
     fileprivate var headView:UIView?
     fileprivate var pageView:DB_PageContentView?
@@ -110,11 +120,10 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
     ///   - controllersArray: 标签controllers
     ///   - superController: 父视图VC
     ///   - headerView: 头部试图
-    init(frame: CGRect,titles:[String],controllersArray:[ContentViewController],superController:UIViewController,headerView:UIView) {
+    init(frame: CGRect,titles:[String],controllersArray:[ContentViewController],headerView:UIView) {
         super.init(frame: frame)
         titleArray = titles
         controllers = controllersArray
-        superControll = superController
         headView = headerView
         self.addSubview(self.tableView)
         if headerView.frame.height == 0 {
@@ -130,11 +139,10 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
     ///   - titles: 标签title
     ///   - controllersArray: 标签controllers
     ///   - superController: 父视图VC
-    init(frame: CGRect,titles:[String],controllersArray:[ContentViewController],superController:UIViewController) {
+    init(frame: CGRect,titles:[String],controllersArray:[ContentViewController]) {
         super.init(frame: frame)
         titleArray = titles
         controllers = controllersArray
-        superControll = superController
         self.addSubview(self.titleView!)
         
         for index in 0..<titleArray.count {
@@ -143,14 +151,14 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             contentVC.segTitle = titleArray[index]
         }
         
-        pageView = DB_PageContentView(frame: CGRect(x: 0, y: (self.titleView?.frame.size.height)! + CGFloat(StatusBarAndNavigationBarHeight), width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: controllers, parentVC: superControll, delegate: self)
+        pageView = DB_PageContentView(frame: CGRect(x: 0, y: (self.titleView?.frame.size.height)! + CGFloat(StatusBarAndNavigationBarHeight), width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: controllers, delegate: self)
         self.addSubview(pageView!)
         
     }
     
     @objc fileprivate func changeScrollStatus() {
         canScroll = true
-        contentCell?.cellCanScroll = false
+        contentCell.cellCanScroll = false
     }
     
     //MARK --- tableView 协议方法
@@ -163,18 +171,7 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 1{
-            let cellIdentifier = "cell"
-            contentCell = ContentViewCell(style: .default, reuseIdentifier: cellIdentifier)
-            contentCell?.selectionStyle = .none
-            for index in 0..<titleArray.count {
-                let contentVC = controllers[index]
-                contentVC.segTitle = titleArray[index]
-            }
-            contentCell?.viewControllers = controllers
-            contentCell?.pageView = DB_PageContentView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), childVCs: controllers, parentVC: superControll, delegate: self)
-            contentCell?.addSubview((contentCell?.pageView)!)
-            contentCell?.pageView?.contentViewCurrentIndex = selectIndex
-            return contentCell!
+            return self.contentCell
         }else{
             let cell = UITableViewCell()
             cell.addSubview(headView!)
@@ -229,7 +226,7 @@ class DBPagingView: UIView,UITableViewDelegate,UITableViewDataSource,PageContent
             scrollView.contentOffset = CGPoint(x: 0, y: bottomCellOffset)
             if canScroll {
                 canScroll = false
-                contentCell?.cellCanScroll = true
+                contentCell.cellCanScroll = true
             }
         }else{
             if !canScroll {
