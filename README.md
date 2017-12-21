@@ -10,16 +10,17 @@
         var controllers = [myViewController]()  //对应controllers数组
         for _ in titles {
             let myVC = myViewController()  //myViewController 内容控制器. 必须继承ContentViewController 父控制器
+            self.addChildViewController(myVC)
             controllers.append(myVC)
         }
 
         ###两种初始化方法###
 
         1. 设置带有头部的pageView
-        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers, superController: self, headerView: header)
+        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers,headerView: header)
 
         2. 设置没有头部的pageView
-        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers, superController: self)
+        let pagingView = DBPagingView(frame: CGRect(x: 0, y: 0, width: KscreenWidth, height: KscreenHeight), titles: titles, controllersArray: controllers)
 
         self.view.addSubview(pagingView)
 
